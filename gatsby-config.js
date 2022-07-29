@@ -9,7 +9,6 @@ module.exports = {
   siteMetadata: {
     title: 'FrontEnd Bootcamp !',
     author: 'Stoyan Nikolov',
-    sest: 'Stoyan Nikolov',
   },
   plugins: [
     'gatsby-plugin-sass'
