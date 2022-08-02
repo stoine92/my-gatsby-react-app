@@ -7,6 +7,9 @@ import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 
 import Layout from '../components/layout' 
 
+import Head from '../components/head';
+
+
 export const query = graphql`
   query($slug: String!) {
     contentfulTheGatsbyBlog(slug: { eq: $slug }) {
@@ -46,6 +49,7 @@ const Blog= ({data}) => {
 
   return (
     <Layout>
+      <Head title={data.contentfulTheGatsbyBlog.title}/>
       <h1>{data.contentfulTheGatsbyBlog.title}</h1>
       <p>{data.contentfulTheGatsbyBlog.publishedDate}</p>
       {renderRichText(data.contentfulTheGatsbyBlog.body, options)}
