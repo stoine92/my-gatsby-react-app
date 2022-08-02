@@ -6,7 +6,7 @@
   "license": "0BSD",
   "scripts": {
     "build": "gatsby build",
-    "develop": "GATSBY_GRAPHQL_IDE=playground CONTENTFUL_SPACE_ID=wm0pjxvi164e CONTENTFUL_ACCESS_TOKEN=-NKP7fju5PYGa4Hsg3f6aZI1l_u3no0hsSuV5F4SdvA gatsby develop",
+    "develop": "env-cmd -f .env.development gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "gatsby develop",
     "serve": "gatsby serve",

@@ -1,5 +1,6 @@
 module.exports = {
   
+
   siteMetadata: {
     title: 'FrontEnd Bootcamp !',
     author: 'Stoyan Nikolov',
