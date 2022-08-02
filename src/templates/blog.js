@@ -1,32 +1,57 @@
 import React from "react";
 import { graphql } from 'gatsby'
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import {renderRichText} from "gatsby-source-contentful/rich-text" 
+import { BLOCKS, MARKS } from '@contentful/rich-text-types'
+import { renderRichText } from 'gatsby-source-contentful/rich-text'
+import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 
 import Layout from '../components/layout' 
 
 export const query = graphql`
-  query($slug: String!){
-    contentfulTheGatsbyBlog(slug: {eq: $slug}){
-      title 
-      publishedDate(formatString: "MMMM Do, YYYY")
-      body{
+  query($slug: String!) {
+    contentfulTheGatsbyBlog(slug: { eq: $slug }) {
+      title
+      publishedDate(formatString: "MMM Do, YYYY")
+      body {
         raw
+        references {
+          ... on ContentfulAsset {
+            contentful_id
+            title
+            gatsbyImageData(width: 1600)
+            __typename
+          }
+        }
       }
     }
   }
 `
 
-const Blog = (props) => {
-    return (
-        <Layout>
-            <h1>{props.data.contentfulTheGatsbyBlog.title}</h1>
-            <h1>{props.data.contentfulTheGatsbyBlog.publishedDate}</h1>
-            {documentToReactComponents(
-        JSON.parse(props.data.contentfulTheGatsbyBlog.body.raw)
-      )}
-        </Layout>
-    )
+const Blog= ({data}) => {
+
+  const options = {
+    renderMark: {
+      [MARKS.BOLD]: text => <b>{text}</b>
+    },
+    renderNode: {
+      [BLOCKS.HEADING_1]: (node, children) => {
+        return <h1>{children}</h1>
+      },
+      [BLOCKS.EMBEDDED_ASSET]: node => {
+        const { gatsbyImageData, title} = node.data.target
+        return <GatsbyImage image={getImage(gatsbyImageData)} alt={title} />
+      }
+    }
+  }
+
+  return (
+    <Layout>
+      <h1>{data.contentfulTheGatsbyBlog.title}</h1>
+      <p>{data.contentfulTheGatsbyBlog.publishedDate}</p>
+      {renderRichText(data.contentfulTheGatsbyBlog.body, options)}
+    </Layout>
+  )
+
 }
 
-export default Blog;
+export default Blog
